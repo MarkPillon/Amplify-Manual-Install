@@ -1,54 +1,91 @@
-# React + TypeScript + Vite
+# Amplfy and Vite | React template in .ts
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Here are the steps to getting your lightweight amplify setup with a super simple front end
 
-Currently, two official plugins are available:
+The main parts are from the Aplify Doc's found [here](https://docs.amplify.aws/react/start/manual-installation/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+You'll need
+- AWS account
+- Github connection
+- Code editor such as VS or Gitpod
 
-## Expanding the ESLint configuration
+## Step 1 - Install Amplify
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Run this code in your editor and proceed with the installation instructions.  You'll get all the files and structure you need to get set up.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```sh
+npm create amplify@latest
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Once complete you'll see "Welcome to Amplify" and suggestions to run the sandbox.  But just wait before we do anything else I suggest you set up a simple front end.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Lets load up Vite and React using this code
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
+```sh
+npm create vite@latest . -- --template react-ts
+```
+
+Proceed with the installation instructions and ignore any files and continue.
+
+Next we just need to run the following code to get all our packages uploaded.
+
+```sh
+npm install
+```
+
+From this point I'm eager to get designing with ```npn run dev``` however I suggest we add a few files and then go with the git commands to push everything up.
+
+Next we'll update the vite.config.ts file with the following.  You'll find this file at the bottom of all your files in the root section.
+
+```ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  base: './', // Ensures relative paths for assets
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets', // Ensures assets are correctly placed
   },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
+  server: {
+    strictPort: true,
   },
 })
+
 ```
+
+With that set up next we'll make our ```amplify.yml``` file also in the root section with the following code.
+
+```yml
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+
+```
+
+Great, now we can push it up and then we'll move to the Aplify section in AWS.
+
+```sh
+git add .
+git commit -m "manual setup"
+git push origin main
+```
+
+Here you'll need to link your Github with Amplify.  There will be an authorization check and once thats ok we can run ```Deploy``` with all the default settings.
+
+You should see this below from your Domain that was created by Amplify.
+
+![alt text](image.png)
