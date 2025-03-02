@@ -7,7 +7,7 @@ The main parts are from the Aplify Doc's found [here](https://docs.amplify.aws/r
 You'll need
 - AWS account
 - Github connection
-- Code editor such as VS or Gitpod
+- Code editor such as VS or Gitpod that is connected to Github so we can implement CI/CD functionality.
 
 ## Step 1 - Install Amplify
 
@@ -86,6 +86,6 @@ git push origin main
 
 Here you'll need to link your Github with Amplify.  There will be an authorization check and once thats ok we can run ```Deploy``` with all the default settings.
 
-You should see this below from your Domain that was created by Amplify.
+You should see [this](https://main.d14gwr0byd26gz.amplifyapp.com/) below from your Domain that was created by Amplify.
 
 ![alt text](image.png)
